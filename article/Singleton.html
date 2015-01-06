@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>单体/单例模式</title>
+</head>
+<body>
+	<h3>单例模式</h3>
+	<p>单例（Singleton）模式的思想在于保证一个特定类仅有一个实例。实现的方法一般是先判断实例存在与否，如果存在直接返回，如果不存在就创建了再返回，这就确保了一个类只有一个实例对象。</p>
+	<p>要求：</p>
+	<ul>
+		<li>当类只能有一个实例而客户可以从一个终所周知的访问点访问它。</li>
+		<li>该唯一的实例应该是用过子类化可扩展的，并且客户应该无需更改代码就能使用一个扩展的实例。</li>
+		<li style="color:red">单例模式确保每一个类只有一个实例，而且自行的实例化并且想整个系统提供该实例的接口。单例模式只有在真正需要单一模式的时候使用。</li>
+	</ul>
+	<p>适用性：</p>
+	<ul>
+		<li>当类只能有一个实例，客户端通过规范的访问点来进行访问。</li>
+	</ul>
+	<p>例子：</p>
+	<ul>
+		<li>全局命名空间</li>
+		<li>遮罩层</li>
+	</ul>
+	<script type="text/javascript">
+		// 测试
+		// var uni = new Universe();
+		// var uni2 = new Universe();
+		// console.log(uni === uni2); // true
+
+		// // 添加原型属性
+		// Universe.prototype.nothing = true;
+
+		// var uni = new Universe();
+
+		// Universe.prototype.everything = true;
+
+		// var uni2 = new Universe();
+
+		// console.log(uni.nothing); // true
+		// console.log(uni2.nothing); // true
+		// console.log(uni.everything); // true
+		// console.log(uni2.everything); // true
+		// console.log(uni.constructor === Universe); // true
+		function Universe() {
+
+		    // 缓存实例
+		    var instance;
+
+		    // 重新构造函数
+		    Universe = function Universe() {
+		        return instance;
+		    };
+
+		    // 后期处理原型属性
+		    Universe.prototype = this;
+
+		    // 实例
+		    instance = new Universe();
+
+		    // 重设构造函数指针
+		    instance.constructor = Universe;
+
+		    // 其它功能
+		    instance.start_time = 0;
+		    instance.bang = "Big";
+
+		    return instance;
+		}
+
+		var Universe;
+
+		(function () {
+
+		    var instance;
+
+		    Universe = function Universe() {
+
+		        if (instance) {
+		            return instance;
+		        }
+
+		        instance = this;
+
+		        // 其它内容
+		        this.start_time = 0;
+		        this.bang = "Big";
+		    };
+		} ());
+
+
+		// 
+		var singleton = function( fn ){
+		    var result;
+		    return function(){
+		        return result || ( result = fn .apply( this, arguments ) );
+		    }
+		}
+		 
+		var createMask = singleton( function(){
+			return document.body.appendChild( document.createElement('div') );
+		});
+	</script>
+</body>
+</html>
